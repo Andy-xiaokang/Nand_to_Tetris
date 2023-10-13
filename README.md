@@ -35,6 +35,15 @@ CHIP Mux {
     Or(a=out1, b=out2, out=out);
 }
 ```
+## project2 Boolean Arithmetric
+the main problem is ALU  
+use Mux16 chip for control bit. zx nx zy ny f no etc.
+
+```HDL
+    Mux16(a=x, b=false, sel=zx, out=x1);
+    Not16(in=x1, out=notx1);
+    Mux16(a=x1, b=notx1, sel=nx, out=x2);
+```
 
 
 
