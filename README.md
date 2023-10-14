@@ -45,5 +45,18 @@ use Mux16 chip for control bit. zx nx zy ny f no etc.
     Mux16(a=x1, b=notx1, sel=nx, out=x2);
 ```
 
+## Project03 Memory
+1bit register -> 16bit register -> 8RAM -> 64RAM -> 512RAM -> 4KRAM -> 16KRAM  
+use DMUX plus top address bits to load the `load` to the selected RAM   
+use behinds bits to load the input  
+use MUX and the top bits of address to output the selected RAM's output.
+the main problem is PC  
 
+```HDL
+    Inc16(in=state, out=out1);
+    Mux16(a=state, b=out1, sel=inc, out=out2);  //In most cases, the counter has to simply increment itself by 1 in each clock cycle
+    Mux16(a=out2, b=in, sel=load, out=out3);
+    Mux16(a=out3, b=false, sel=reset, out=out4);
+    Register(in=out4, load=true, out=out, out=state);
+```
 
