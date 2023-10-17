@@ -1,4 +1,4 @@
-# Nand2Tetris
+# [Nand2Tetris](https://www.coursera.org/learn/build-a-computer)
 一个vscode 上好用的工具[Nand2Tetris tools](https://marketplace.visualstudio.com/items?itemName=leafvmaple.nand2tetris&ssr=false#overview)  可以自动运行后生成.out 文件 并与.cmp 文件对比。以及自动压缩需要提交的文件，打开模拟器等。
 运行程序方式可以 cmd + P 打开命令面板，**按下`>`终端命令提示符**， 然后才可以nand2tetris 模糊搜索对应命令。
 ## project0
@@ -59,4 +59,23 @@ the main problem is PC
     Mux16(a=out3, b=false, sel=reset, out=out4);
     Register(in=out4, load=true, out=out, out=state);
 ```
+
+## Project04 Machine Language Programming
+get familiar with the hack assemble Language
+Mult assume R0 and R1 >= 0, use loop to resolve this problem.  
+the main problem is fill.asm use two nested loop to solve this problem.
+the outer loop used for check the KBD and the inner loop used the fill the screen 
+initialize `i` and use it for counter, use `address` for pointer use `n` for the number of pixel (8K)  
+pay attention to a bug 
+```asm
+        @address
+        M = M + 1  //address = address + 1
+``` 
+
+not 
+```asm
+        @address
+        M = M + i  //address = address + i
+```
+my memory out of bound and always send error for this reason. I debug ths problem use a lot of time...
 
