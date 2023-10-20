@@ -40,4 +40,58 @@ CHIP CPU {
 
     PARTS:
     // Put your code here:
+    // if i == 0 then load the 15bits address to A and 
+    // if i == 1 and d1 == 1 the load the outM to A register
+    Not(in=instruction[15], out=noti);
+    Or(a=noti, b=instruction[5], out=notiord1);  // d1 is instruction[5]
+    Mux16(a=instruction, b=Moutput, sel=instruction[15], out=Ain);
+    ARegister(in=Ain, load=notiord1, out=Aout, out[0..14]=addressM);    // if i == 1 and d1 == 1 write outM to A 
+                                                                // besides Aout is addressM
+    //if i == 1 then writeM = d3
+    Mux(a=false, b=instruction[3], sel=instruction[15], out=writeM, out=d3);
+
+    // a if a == 0 comp A and D else comp M and D 
+    Mux16(a=Aout, b=inM, sel=instruction[12], out=ALUinput2);   // a is instruction[12]
+
+    // D register
+    And(a=instruction[4], b=instruction[15], out=destD);
+    DRegister(in=Moutput, load=destD, out=ALUinput1);   // d2 is instruction[4]
+
+    // ALU
+    // x is D y is A or M; (zx nx zy ny f no) = (c1 c2 c3 c4 c5 c6)
+    ALU(x=ALUinput1, y=ALUinput2, zx=instruction[11], nx=instruction[10], zy=instruction[9], ny=instruction[8], f=instruction[7], no=instruction[6], out=Moutput, zr=zero, ng=neg);
+    Mux16(a=false, b=Moutput, sel=d3, out=outM);
+
+    // PC
+    // figure out jump  
+    // j1 j2 j3 
+    // 0  0  0  jump = 0
+    // 0  0  1 !ng and !zr
+    // 0  1  0  zr
+    // 0  1  1  !ng
+    // 1  0  0  ng
+    // 1  0  1  !zr  
+    // 1  1  0  ng or zr
+    // 1  1  1 jump = 1
+    Not(in=neg, out=notng);
+    Not(in=zero, out=notzr);
+    And(a=notng, b=notzr, out=positive);
+    Or(a=neg, b=zero, out=ngorzr);
+
+    Mux(a=false, b=positive, sel=instruction[0], out=mux1);
+    Mux(a=zero, b=notng, sel=instruction[0], out=mux2);
+    Mux(a=neg, b=notzr, sel=instruction[0], out=mux3);
+    Mux(a=ngorzr, b=true, sel=instruction[0], out=mux4);
+
+    Mux(a=mux1, b=mux2, sel=instruction[1], out=mux5);
+    Mux(a=mux3, b=mux4, sel=instruction[1], out=mux6);
+    
+    Mux(a=mux5, b=mux6, sel=instruction[2], out=jump1);
+    And(a=jump1, b=instruction[15], out=jump);
+    // if not jump then inc = true
+    Not(in=jump, out=incinput);
+    
+
+    PC(in=Aout, load=jump, inc=incinput, reset=reset, out[0..14]=pc);
+
 }

@@ -61,6 +61,7 @@ the main problem is PC
 ```
 
 ## Project04 Machine Language Programming
+a new level of abstraction, from machine code to symbolic Programming.  
 get familiar with the hack assemble Language
 Mult assume R0 and R1 >= 0, use loop to resolve this problem.  
 the main problem is fill.asm use two nested loop to solve this problem.
@@ -79,3 +80,38 @@ not
 ```
 my memory out of bound and always send error for this reason. I debug ths problem use a lot of time...
 
+## Project05 Computer Architecture
+### Memory.hdl  
+0000000000000000  
+0111111111111111  RAM  
+1000000000000000
+1011111111111111  screen
+1100000000000000 keyboard  注意只考虑这三种输入，其他地址输入无效  
+a[14] determins load to screen or RAM, a[13] determines load to screen  
+and assume there is only three type input 
+### CPU.hdl  
+***this part is really cool*** you need to pay a lot of efforts in this problem  
+* problem1 consider how to identify A-instruction and C-instruction and how to use the control bit i and d1 put them in the same part of the Architecture without conflict.  
+* problem2 ALU part (zx nx zy ny f no) = (c1 c2 c3 c4 c5 c6), x[16] = D, y[16] = A/M, and if a == 0 comp A D, if a == 1 comp M D 
+* **probelem3** PC. this is the most hard part in CPU, you need to use the control bits j1 j2 j3 and ALU's output control bit to determine the Program Counter, which corresponds to the address of the instruction in the ROM, which will be executed in the next clock. when load is true, the pc's output will be the address stored in A register. and if no jump, then inc = true.
+
+```HDL 
+    // PC
+    // figure out jump  
+    // j1 j2 j3 
+    // 0  0  0  jump = 0
+    // 0  0  1 !ng and !zr
+    // 0  1  0  zr
+    // 0  1  1  !ng
+    // 1  0  0  ng
+    // 1  0  1  !zr  
+    // 1  1  0  ng or zr
+    // 1  1  1  jump = 1  
+```
+
+![1697790797383](https://raw.githubusercontent.com/Andy-xiaokang/Picgo/master/images/1697790797383.jpg)  
+* problem 4 another bug is the the output load to D register only when it is C instruction.  
+[can't pass CPU-externa.txt](https://www.coursera.org/learn/build-a-computer/discussions/forums/aJtzoij3EeaZ8Apto8QB_w/threads/JMa4x55iEe2frQpsidP4Hw)  
+use nearly a whole day and debug some problems, rewarding!!!  
+### Computer.hdl 
+just connect the ROM RAM and CPU is ok  
