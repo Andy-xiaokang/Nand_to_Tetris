@@ -115,3 +115,13 @@ and assume there is only three type input
 use nearly a whole day and debug some problems, rewarding!!!  
 ### Computer.hdl 
 just connect the ROM RAM and CPU is ok  
+
+### assemble
+use python dict and re module 
+* read original file and store the lines in list
+* delete all space and comments
+* first scan the list and add label to symbol table(the dict)  
+* second scan the list and add the variable to the symbol table (take careful not all the value behind the @ are variable)  
+* remove label and restore it in another list 
+* iterate though the list if it's A instruction use parsea if it's C instruction use parsec  
+
