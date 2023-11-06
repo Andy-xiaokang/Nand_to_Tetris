@@ -116,6 +116,7 @@ use nearly a whole day and debug some problems, rewarding!!!
 ### Computer.hdl 
 just connect the ROM RAM and CPU is ok  
 
+## project06 Assembler
 ### assemble
 use python dict and re module 
 * read original file and store the lines in list
@@ -125,3 +126,32 @@ use python dict and re module
 * remove label and restore it in another list 
 * iterate though the list if it's A instruction use parsea if it's C instruction use parsec  
 
+## project07 VMTranslator part I    
+### VMTranslator.py 
+* use sys re and str.method to read the original file and store the vmcode in the VMTranslator.vmcode attribute
+* first handle Arithmetric operation 
+    ```python
+            self.arithmetic_dict = {
+            "neg": "-", "not": "!",
+            "add": "+", "sub": "-", "and": "&", "or": "|",
+            "eq": "JEQ", "gt": "JGT", "lt": "JLT"
+        }
+    ```
+    there is a hard question with `eq` `gt` and `lt` you need to use different label and jump assemble to branch `true -1` and `false 0`, I can't think out a better method to figure out this question, because assemble language can't access the ALU's flag bit.  
+* constant segment 
+    it's a virtual segment and there's is no pop operation with this segment, the push constant i just push i into the stack
+* static segment 
+    `R[16]~R[255]` to store the static variable,   
+    for push first get the static value `@filename.index` `D=M` then push it into the stack  
+    for pop first get the stack value and store it into D register then `@filename.index` `M=D`  
+* temp pointer  segment
+    temp segment `push addr = 5+ i; *sp = *addr; sp++`  
+                 `pop addr = 5 + i; sp--; *addr = *sp` **R[13] R[14] R[15]** is used for variable
+    pointer segment **just change the 5 to 3** and plus the index 0/1 is R[3]/R[4] corresponds to `THIS` and `THAT`  
+* local argument this that segment 
+    these four segment has the same push or pop paradigm  
+    `addr = LCL + index; *sp = *addr; sp++`  
+
+this project is very rewarding to practice python
+
+    
