@@ -153,5 +153,24 @@ use python dict and re module
     `addr = LCL + index; *sp = *addr; sp++`  
 
 this project is very rewarding to practice python
+![1699275776506](https://raw.githubusercontent.com/Andy-xiaokang/Picgo/master/images/1699275776506.jpg)  
 
-    
+
+## project08 VMTranslator partII  
+### VMTranslator.py 
+at the beginning i passed all test except the Fibonaccielement
+I review all my asm code translation and find no bugs but the RAM[0] = 271 and RAM[1] = 4, always wrong.
+then I review my `call Main.fibonacci 1 ` function 
+I find an important issue to make every call function return address label unique, please make sure that you translated asm code has three different returnaddresslabel
+
+1. `@Main.fibonacci$ret0 ...    (Main.fibonacci$ret0)`
+2. `@Main.fibonacci$ret1 ...    (Main.fibonacci$ret1)`
+3. `@Main.fibonacci$ret2 ...    (Main.fibonacci$ret2)`
+the first and second is translated from `Main.vm` and third from `Sys.vm`  
+to make your returnaddress alias returnlabel unique   
+make sure to make your ret_index as a class attribute  
+then in your instance method
+
+`SVMTranslator.ret_index += 1`
+then every call of the same function in different files will has a unique return address label
+![20231112171856](https://raw.githubusercontent.com/Andy-xiaokang/Picgo/master/images/20231112171856.png)  
