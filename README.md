@@ -1,6 +1,8 @@
 # [Nand2Tetris](https://www.coursera.org/learn/build-a-computer)
 一个vscode 上好用的工具[Nand2Tetris tools](https://marketplace.visualstudio.com/items?itemName=leafvmaple.nand2tetris&ssr=false#overview)  可以自动运行后生成.out 文件 并与.cmp 文件对比。以及自动压缩需要提交的文件，打开模拟器等。
 运行程序方式可以 cmd + P 打开命令面板，**按下`>`终端命令提示符**， 然后才可以nand2tetris 模糊搜索对应命令。
+
+## [partI certificate](https://coursera.org/share/c0c9c05635434799cb59ccc3270f95ec)
 ## project0
 提交文件，熟悉是否能够使用coursera提交作业。
 ## project1 Boolean logic
@@ -174,3 +176,26 @@ then in your instance method
 `SVMTranslator.ret_index += 1`
 then every call of the same function in different files will has a unique return address label
 ![20231112171856](https://raw.githubusercontent.com/Andy-xiaokang/Picgo/master/images/20231112171856.png)  
+
+
+## project10 compiler partI
+### tokenizer.py
+first handle string, then add dilimeters to split the line  
+
+```python
+                delimeters = re.findall(r"[\[\]\(\)\{\}\,\.\;\-\~ ]", code)
+                if delimeters:
+                    for delimeter in delimeters:
+                        first, code = code.split(delimeter, 1)[0], code.split(delimeter,1)[1]
+                        if first:
+                            self.tokens.append(first)
+                        if delimeter == ' ':
+                            continue
+                        else:
+                            self.tokens.append(delimeter)
+```
+
+### JackAnalyzer.py
+use the given un_terminal_tags to parse the `class` construct the parse tree    
+from `compileClass()` to `compileTerm()`  use Terminal_token and Unterminal_token to express every line in .xml file  
+pay attention to the descent parsing tree 
